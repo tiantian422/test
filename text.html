@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vconsole@3.9.1/dist/vconsole.min.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -19,6 +20,8 @@
     </div>
 </body>
 <script>
+    var vConsole = new VConsole();
+    console.log('Hello vConsole');
     function openCamera(){ // 打开摄像头
         const video = document.getElementById('video')
         return new Promise((resolve,reject) => {
