@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <video
+        id="video"
+        ref="video"
+        class="video"
+        webkit-playsinline="true"
+        playsinline="true"
+        autoplay
+        width="200"
+        height="200" />
+    </div>
+</body>
+<script>
+    function openCamera(){ // 打开摄像头
+        const video = document.getElementById('video')
+        return new Promise((resolve,reject) => {
+            console.log("openCamera:video.value.srcObject1",video.srcObject)
+            // if (video.value.srcObject && video.value.srcObject !== null) {
+            //     resolve(true)
+            //     return
+            // }
+                if (navigator.mediaDevices === undefined) {
+                    navigator.mediaDevices = {}
+                }
+
+                if (navigator.mediaDevices.getUserMedia === undefined) {
+                    navigator.mediaDevices.getUserMedia = function(constraints) {
+                        let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.getUserMedia
+                        if (!getUserMedia) {
+                            return Promise.reject(new Error("getUserMedia is not implemented in this browser"))
+                        }
+                        return new Promise(function(resolve, reject) {
+                            getUserMedia.call(navigator, constraints, resolve, reject)
+                        })
+                    }
+                }
+
+                const constraints = {
+                    audio: false,
+                    video: { 
+                        width: 200, 
+                        height: 200,
+                        transform: "scaleX(-1)" 
+                    }
+                }
+                navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+                    if ("srcObject" in video) {
+                        console.log(stream)
+                        video.srcObject = stream
+                    } else {
+                        // video.value.src = window.URL.createObjectURL(stream)
+                    }
+                    video.onloadedmetadata = function(e) {
+                        video.play()
+                    }
+                    resolve(true)
+                })
+                    .catch(() => {
+                        console.log("没有开启摄像头权限或浏览器版本不兼容")
+                        reject(false)
+                    })
+        })
+    
+    }
+    openCamera()
+</script>
+</html>
