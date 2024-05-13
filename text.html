@@ -47,6 +47,7 @@
                         })
                     }
                 }
+                console.log(navigator.mediaDevices.getUserMedia)
 
                 const constraints = {
                     audio: false,
@@ -57,8 +58,9 @@
                     }
                 }
                 navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+                    console.log('stream',stream)
                     if ("srcObject" in video) {
-                        console.log(stream)
+                        console.log('stream',stream)
                         video.srcObject = stream
                     } else {
                         // video.value.src = window.URL.createObjectURL(stream)
