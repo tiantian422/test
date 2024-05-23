@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Camera Integration</title>
+</head>
+<body>
+    <input type="file" id="cameraInput" accept="image/*;capture=camera">
+    <button id="snapshotButton">Snap Photo</button>
+    <img id="snapshot" src="" alt="Snapshot">
+ 
+    <script>
+
+document.getElementById('cameraInput').addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('snapshot').src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+});
+ 
+document.getElementById('snapshotButton').addEventListener('click', function() {
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(stream) {
+            var video = document.createElement('video');
+            video.srcObject = stream;
+            video.autoplay = true;
+            video.onloadedmetadata = function(e) {
+                video.width = 640;
+                video.height = 480;
+                document.body.appendChild(video);
+            };
+        })
+        .catch(function(err) {
+            console.log(err.name + ": " + err.message);
+        });
+});
+    </script>
+</body>
+</html>
